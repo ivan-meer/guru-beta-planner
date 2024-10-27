@@ -9,7 +9,11 @@
   },
   "dependencies": {
     "@nuxt/content": "^2.13.4",
+    "@nuxthq/studio": "^2.1.1",
     "@nuxthub/core": "^0.8.2",
     "nuxt": "^3.13.2"
+  },
+  "devDependencies": {
+    "wrangler": "^3.83.0"
   }
 }
