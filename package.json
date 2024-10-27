@@ -11,5 +11,6 @@
     "@nuxt/content": "^2.13.4",
     "@nuxthub/core": "^0.8.2",
     "nuxt": "^3.13.2"
-  }
+  },
+  "packageManager": "pnpm"
 }
