@@ -5,43 +5,50 @@
       <h1>Welcome to Guru Beta Planner!</h1>
     </div>
     <div class="slider-container">
-      <div class="slider" :style="{ transform: `translateX(-${currentSlide * 100}%)` }">
-        <div class="slide">
-          <h2>Slide 1</h2>
-          <p>This is the first slide of the onboarding.</p>
-        </div>
-        <div class="slide">
-          <h2>Slide 2</h2>
-          <p>This is the second slide.</p>
-        </div>
-        <div class="slide">
-          <h2>Slide 3</h2>
-          <p>This is the last slide.</p>
-        </div>
+      <div class="slider">
+        <OnboardingSlide
+          v-for="(slide, index) in slides"
+          :key="index"
+          :title="slide.title"
+          :content="slide.content"
+          :link="slide.link"
+        />
       </div>
       <div class="slider-nav">
-        <button @click="prevSlide">Previous</button>
-        <button @click="nextSlide">Next</button>
+        <span
+          v-for="i in slides.length"
+          :key="i"
+          :class="{ active: currentSlide === i - 1 }"
+          @click="currentSlide = i - 1"
+        ></span>
       </div>
     </div>
-    <NuxtLink to="/about">
-      <button>Continue</button>
-    </NuxtLink>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import OnboardingSlide from '@/components/OnboardingSlide.vue';
+
+const slides = ref([
+  { title: 'Slide 1', content: 'This is the first slide of the onboarding.', link: '/about' },
+  { title: 'Slide 2', content: 'This is the second slide.', link: '/about' },
+  { title: 'Slide 3', content: 'This is the last slide.', link: '/about' },
+]);
 
 const currentSlide = ref(0);
-const numSlides = 3;
+let autoAdvanceInterval;
+
+onMounted(() => {
+  autoAdvanceInterval = setInterval(nextSlide, 4000);
+});
 
 const nextSlide = () => {
-  currentSlide.value = (currentSlide.value + 1) % numSlides;
+  currentSlide.value = (currentSlide.value + 1) % slides.value.length;
 };
 
 const prevSlide = () => {
-  currentSlide.value = (currentSlide.value - 1 + numSlides) % numSlides;
+  currentSlide.value = (currentSlide.value - 1 + slides.value.length) % slides.value.length;
 };
 </script>
 
@@ -80,7 +87,7 @@ const prevSlide = () => {
   width: 80%;
   max-width: 600px;
   margin: 20px auto;
-  overflow: hidden;
+  position: relative; /* Added for absolute positioning of nav */
 }
 
 .slider {
@@ -88,31 +95,30 @@ const prevSlide = () => {
   transition: transform 0.5s ease-in-out;
 }
 
+.slider-nav {
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.slider-nav span {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: #ccc;
+  border-radius: 50%;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.slider-nav span.active {
+  background-color: #4CAF50;
+}
+
 .slide {
   width: 100%;
   padding: 20px;
   text-align: center;
-}
-
-.slider-nav {
-  display: flex;
-  justify-content: space-around;
-  width: 100%;
-  margin-top: 10px;
-}
-
-.slider-nav button {
-  background-color: #4CAF50;
-  border: none;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 10px 0;
-  cursor: pointer;
-  border-radius: 5px;
 }
 
 @media (max-width: 600px) {

@@ -2,10 +2,11 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: ['@nuxt/content', '@nuxthub/core', '@nuxthq/studio'],
-
+  hub: {
+    database: true
+  },
   routeRules: {
     '/': { prerender: true }
   },
-
   compatibilityDate: '2024-10-26'
 })
