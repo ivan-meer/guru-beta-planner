@@ -3,4 +3,4 @@
 ---
 
 [Back home](/)
-/about
+[About](/about)
